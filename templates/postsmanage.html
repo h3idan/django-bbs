@@ -1,0 +1,78 @@
+<?xml version="1.0" encoding="UTF-8"?> 
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
+<head>
+	<meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+	<title>帖子管理</title>
+	<link rel="stylesheet" href="/static/bootstrap/css/bootstrap.css">
+	<link rel="stylesheet" href="/static/bootstrap/css/bootstrap.min.css">
+	<link rel="stylesheet" href="/static/bootstrap/css/bootstrap-responsive.css">	
+	<link rel="stylesheet" href="/static/bootstrap/css/bootstrap-responsive.min.css">	
+	
+    <script type="text/javascript" src="/static/bootstrap/js/bootstrap.js"></script>
+    <script type="text/javascript" src="/static/bootstrap/js/bootstrap.min.js"></script>  
+
+</head>
+<body>
+<div class='span12'>
+    <p align='center'><b>my bbs</b></p><hr />
+</div>
+
+<div class="span12">
+    <span class="btn-info ">帖子管理</span>
+<hr />
+<span class="label label-info">用户</span>&nbsp;{{ request.session.username }}
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+<a href="/"><button class="label label-info">回到首页</button></a>
+<br />
+<br />
+
+
+{% if posts %}
+	{% for post in posts_list.object_list %}
+		{% if request.session.email == post.user.email  %}
+		<pre>	
+    		标题：<a href='/bbs/cnhei/{{ post.id }}'>{{ post.title }}</a>
+    		作者：{{ post.user.username }}
+    		内容：{{ post.details|safe}}
+    		<br />
+    		<a href='/bbs/postsdel/{{post.id}}'>删除</a>
+        </pre>
+    	{% endif %}	
+	{% endfor %}
+{% else %}
+	<pre><span>这里已经没有帖子了！！！</span></pre>
+	<hr />
+{% endif %}
+
+
+<div class='span2' >
+    {% if has_previous %}
+    	<a href="/?page={{ previous }}">上一页</a>
+    {% endif %}
+    
+    {% if has_next %}
+    	<a href="/?page={{ next }}"></a>
+    {% endif %}
+    
+    {% if posts_list.has_previous %}
+    	<a href="?page={{ posts_list.previous_page_number }}" title="下一页">上一页</a>&nbsp;
+    {% endif %}
+    
+    {% for p in page_range %}
+    	{% ifequal p posts_list.number %}
+    		<span>第{{ p }}页   </span>
+    	{% else %}
+    		<a href="?page={{ p }}" title="第{{ p }}页">{{ p }}</a>
+    	{% endifequal %}
+    {% endfor %}
+    
+    &nbsp;
+    
+    {% if posts_list.has_next %}
+    	<a href="?page={{ posts_list.next_page_number }}" title="下一页">下一页</a>&nbsp;
+    {% endif %}
+</div>
+
+</body>
+</html>

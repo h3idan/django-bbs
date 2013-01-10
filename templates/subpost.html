@@ -1,0 +1,129 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8" />
+<title>{{ nameid.title }}</title>
+	<link rel="stylesheet" href="/static/bootstrap/css/bootstrap.css">
+	<link rel="stylesheet" href="/static/bootstrap/css/bootstrap.min.css">
+	<link rel="stylesheet" href="/static/bootstrap/css/bootstrap-responsive.css">	
+	<link rel="stylesheet" href="/static/bootstrap/css/bootstrap-responsive.min.css">	
+	
+    <script type="text/javascript" src="/static/bootstrap/js/bootstrap.js"></script>
+    <script type="text/javascript" src="/static/bootstrap/js/bootstrap.min.js"></script> 
+    {{ form.media }}
+</head>
+<body>
+
+<div class='span12'>
+    <p align='center'><b>my bbs</b></p><hr />
+</div>
+
+
+<div class="span12">
+
+    <span class="label label-info">帖子内容：</span>&nbsp;&nbsp;
+    <span ><a href='/'>返回首页</a></span>
+    <hr class="span11"  />
+
+    <div class="span11">
+   		<div class='span5'>    
+            <div class="span10">            
+                <span class="label label-success">标题</span>&nbsp;
+                {{ nameid.title }}
+            </div>
+            <div class="span10">            
+                <span class="label label-success">作者</span>&nbsp;
+                {{ nameid.user.username }}<br />
+            </div>
+            <div class="span10">            
+                <span class="label label-success">内容</span>&nbsp;
+                {{ nameid.details|safe }}
+            </div>
+    	</div>
+        <hr class="span11" />
+        <div class="span11">
+            <div class="span1 label label-info">回复内容：</div>
+            <hr class="span10" />
+            
+            {% if replys %}
+            	{% for post in posts_list.object_list %}	
+            <div class="span10">            
+                <span class="label label-success">作者</span>&nbsp;
+                {{ post.user.username }}
+            </div>            		
+            
+            <div class="span10">            
+                <span class="label label-success">回复</span>&nbsp;
+                {{ post.details|safe }}
+            </div>
+            <hr class="span10"/>
+            	{% endfor %}
+            {% else %}
+            	<span>赶快抢沙发吧！！</span>
+                <hr class="span10" />
+            {% endif %}
+        </div>
+                      
+        <div class='span2' >                      
+            {% if has_previous %}
+            	<a href="/?page={{ previous }}">上一页</a>
+            {% endif %}
+            
+            {% if has_next %}
+            	<a href="/?page={{ next }}"></a>
+            {% endif %}
+            
+            {% if posts_list.has_previous %}
+            	<a href="?page={{ posts_list.previous_page_number }}" title="下一页">上一页</a>&nbsp;
+            {% endif %}
+            
+            {% for p in page_range %}
+            	{% ifequal p posts_list.number %}
+            		<span>第{{ p }}页   </span>
+            	{% else %}
+            		<a href="?page={{ p }}" title="第{{ p }}页">{{ p }}</a>
+            	{% endifequal %}
+            {% endfor %}
+            
+            &nbsp;
+            
+            {% if posts_list.has_next %}
+            	<a href="?page={{ posts_list.next_page_number }}" title="下一页">下一页</a>&nbsp;
+            {% endif %}
+        </div>
+        <hr class="span11" />
+
+        <div class="span11">
+            <form name="form1" action="/bbs/subpost/{{ nameid.id }}/" method="POST">
+            
+            {% if request.session.username %}
+                <div class="">    
+                    <label for="id_username">作者
+                    {{ request.session.username }}&nbsp;&nbsp;
+                    <a href="/bbs/logout/" >登出</a>&nbsp;&nbsp;
+                    <span ><a href='/'>返回首页</a></span>
+                    </label>
+                </div>            	
+            		
+            		
+            {% else %}
+            	<a href="/" >请先登录</a><br />
+            {% endif %}	
+                <div class="">    
+                    <label for="id_comments">回复内容：</label>
+                    {{ form.comments }}
+                </div>
+                <input class="btn btn-success" type="submit" value="提交" />            	
+
+            </form>
+            <script language=“javascript”> document.form1.submit（） </script>
+        </div>        
+        
+    </div>
+
+</div>        
+
+
+
+</body>
+</html>

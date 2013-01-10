@@ -1,0 +1,51 @@
+<?xml version="1.0" encoding="UTF-8"?> 
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
+<head>
+	<meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+{#	<meta http-equiv="refresh" content="0; url=http://localhost:8000/" />  #}
+	<title>发帖</title>
+	{{ form.media }}
+	<link rel="stylesheet" href="/static/bootstrap/css/bootstrap.css">
+	<link rel="stylesheet" href="/static/bootstrap/css/bootstrap.min.css">
+	<link rel="stylesheet" href="/static/bootstrap/css/bootstrap-responsive.css">	
+	<link rel="stylesheet" href="/static/bootstrap/css/bootstrap-responsive.min.css">	
+	
+    <script type="text/javascript" src="/static/bootstrap/js/bootstrap.js"></script>
+    <script type="text/javascript" src="/static/bootstrap/js/bootstrap.min.js"></script>  
+<body>
+
+<div class='span12'>
+    <p align='center'><b>my bbs</b></p><hr />
+</div>
+
+<div class="span12">
+    <span class="span1 label label-info ">发表帖子</span>
+    &nbsp;
+    <span ><a href='/'>返回首页</a></span>
+</div>
+<div class="span12"><hr /></div>
+<div class="span12" >
+    <form action="/bbs/posts/" method="POST">
+        
+        <div class="">
+            <label for="id_title">标题：{{ form.title }}</label>
+        </div>
+        <div class="">
+            <label for="id_username">作者：{{ request.session.username }}</label>
+        </div>
+        <div class="">    
+            <label for="id_details">内容：</label>
+            {{ form.details }}
+        </div>
+    	<br />
+    
+    	<input class="btn btn-success" type="submit" value="提交" />
+    	<a href="/"><input class="btn btn-warning" type="button" value="取消" /></a>
+
+
+    </form>
+</div>
+
+</body>
+</html>

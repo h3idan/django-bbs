@@ -1,0 +1,111 @@
+
+{% extends 'base.html' %}
+
+{% block title %}首页{% endblock %}<br />
+
+<hr />
+{% block content %}
+
+<div class='span12'>
+    <p align='center'><b>my bbs</b></p><hr />
+</div>
+
+
+<div class="span12">
+
+    {% if request.session.username %}
+    <div class="span3">
+        <a href="/bbs/postsadd/" > <input class='btn btn-primary' type="button" value='发帖' /></a>
+        &nbsp;
+        <span>欢迎</span>{{request.session.username}}<span>回来</span>
+            &nbsp;   
+        <a href="/bbs/logout/" >登出</a>&nbsp;&nbsp;<a href='/bbs/changepwd/'>更改密码</a><br />
+        <br />
+        <a href='/bbs/postsmanage/'>管理自己的帖子</a>
+    {% else %}
+    </div>
+
+    <div class="span12">
+        <div class="span3">
+            <h3>H3IDAN</h3>
+        </div>        
+        
+        <form class=" form-horizontal" action="/bbs/login/" method="POST" style="float:right">
+            <input type="text" name="email" placeholder="邮件" />
+            <input type="password" name="passwd" placeholder="密码" />
+            {# <a href='/bbs/retrievepwd/'>忘记密码？</a> #}
+            <input class='btn-info' type="submit" value="登录">
+            <a href="/bbs/register/" ><input class='btn-info' type="button" value="注册"></a>
+        </form>
+        
+    </div>
+        {% endif %}
+</div>
+
+<hr class="span12" />
+
+<div class="span12">
+
+    <span class="span1 label label-info">帖子列表</span>
+    <hr class="span11" />
+    <div class="span12">
+    {% if info %}
+    	{% for post in posts_list.object_list %}
+    		
+    		<div class='span5'>
+    		    <div>
+        		    <span class="label label-success">标题</span>
+        		    <a href='/bbs/replys/{{ post.id }}'>{{ post.title }}</a><br />
+                </div>
+                <div>
+                    <span class="label label-success">作者</span>
+                    {{ post.user.username }}
+                </div>            
+                <div>
+                    <span class="label label-success">帖子内容</span>
+                    <div class="post_details">      		        
+      		        {{ post.details|safe }}
+      		        </div>
+                </div>
+            </div>
+            <hr class="span10" />
+    	{% endfor %}
+    {% else %}
+    </div>
+        <div class="span12">	
+    	   <p>还没有人发帖哦！！</p>
+    	</div>
+    {% endif %}
+    </div>
+
+    <hr class="span11" />
+
+    <div class='span2' >
+        {% if has_previous %}
+        	<a href="/?page={{ previous }}">上一页</a>
+        {% endif %}
+        
+        {% if has_next %}
+        	<a href="/?page={{ next }}"></a>
+        {% endif %}
+        
+        {% if posts_list.has_previous %}
+        	<a href="?page={{ posts_list.previous_page_number }}" title="下一页">上一页</a>&nbsp;
+        {% endif %}
+        
+        {% for p in page_range %}
+        	{% ifequal p posts_list.number %}
+        		<span>第{{ p }}页   </span>
+        	{% else %}
+        		<a href="?page={{ p }}" title="第{{ p }}页">{{ p }}</a>
+        	{% endifequal %}
+        {% endfor %}
+        
+        &nbsp;
+        
+        {% if posts_list.has_next %}
+        	<a href="?page={{ posts_list.next_page_number }}" title="下一页">下一页</a>&nbsp;
+        {% endif %}
+    </div>
+</div>
+{% endblock %}
